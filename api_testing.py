@@ -1,13 +1,23 @@
 import json
+from typing import Any
 import requests
 
-UTAH_STATE_CODE = 49
+def json_to_file(json_data: dict, file_path: str) -> None:
+    with open(file_path, "w") as output_file:
+        json.dump(json_data, output_file, indent=4)
 
-monitoring_locations_endpoint = "https://api.waterdata.usgs.gov/ogcapi/v0/collections/monitoring-locations/items"
 
-response = requests.get(f"{monitoring_locations_endpoint}?state_code={UTAH_STATE_CODE}")
-response_json = response.json()
-# data = json.dumps(response_json, indent=4)
+def get_all_utah_monitoring_locations() -> dict:
+    endpoint = "https://api.waterdata.usgs.gov/ogcapi/v0/collections/monitoring-locations/items"
+    params = {
+        "f": "json",
+        "limit": "100",      # Should be 50000 for real results
+        "state_code": "49"
+    }
 
-with open("data/response.json", "w") as outfile:
-    json.dump(response_json, outfile, indent=4)
+    response = requests.get(endpoint, params=params)
+    return response.json()
+
+
+monitoring_locations = get_all_utah_monitoring_locations()
+json_to_file(monitoring_locations, "data/response.json")
