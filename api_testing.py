@@ -1,5 +1,4 @@
 import json
-from typing import Any
 import requests
 
 def json_to_file(json_data: dict, file_path: str) -> None:
@@ -11,7 +10,7 @@ def get_all_utah_monitoring_locations() -> dict:
     endpoint = "https://api.waterdata.usgs.gov/ogcapi/v0/collections/monitoring-locations/items"
     params = {
         "f": "json",
-        "limit": "100",      # Should be 50000 for real results
+        "limit": "50000",    
         "state_code": "49"
     }
 
